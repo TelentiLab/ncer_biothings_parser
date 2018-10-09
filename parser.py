@@ -8,9 +8,9 @@ from biothings.utils.dataload import open_anyfile, dict_sweep
 FILE_NOT_FOUND_ERROR = 'Cannot find input file: {}'   # error message constant
 
 # change following parameters accordingly
-data_schema = ('chrom', 'start', 'end', 'score')    # field names of the data
-source_name = 'sample_source'   # source name that appears in the api response
-file_name = 'sample_data'   # name of the file to read
+data_schema = ('chrom', 'start', 'end', 'ncer_percentile')    # field names of the data
+source_name = 'ncer'   # source name that appears in the api response
+file_name = 'ncer_data'   # name of the file to read
 delimiter = '\t'    # the delimiter that separates each field
 
 
