@@ -26,7 +26,7 @@ def load_data(data_folder: str):
     # raise an error if file not found
     assert os.path.exists(input_file), FILE_NOT_FOUND_ERROR.format(input_file)
 
-    with open(file_name, 'r') as file:
+    with open(input_file, 'r') as file:
         results = defaultdict(list)
         for line in file:
             # read and parse each line into a dict
