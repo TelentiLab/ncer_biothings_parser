@@ -1,7 +1,7 @@
 {
     "version": "0.1",
     "dumper" : {
-        "data_url" : "http://localhost:8080/data/sliding10bp_window10bp_ncER_OMNI.txt.gz",
+        "data_url" : "http://localhost:8080/data/sample_data.gz",
         "uncompress" : true
     },
     "uploader" : {

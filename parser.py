@@ -3,13 +3,13 @@ import unicodedata
 from collections import defaultdict
 from csv import DictReader
 
-from biothings.utils.dataload import open_anyfile, dict_sweep
+from biothings.utils.dataload import dict_sweep
 
 FILE_NOT_FOUND_ERROR = 'Cannot find input file: {}'   # error message constant
 
 # change following parameters accordingly
 source_name = 'ncer'   # source name that appears in the api response
-file_name = 'sliding10bp_window10bp_ncER_OMNI.txt'   # name of the file to read
+file_name = 'sample_data'   # name of the file to read
 delimiter = '\t'    # the delimiter that separates each field
 
 
@@ -39,10 +39,7 @@ def load_data(data_folder: str):
                 "percentile": percentile,
             }
             variant = dict_sweep(variant, vals=['', 'null', 'N/A', None, [], {}])
-            results[_id].append(variant)
-
-        for k, v in results.items():
             yield {
-                '_id': k,
-                source_name: v
+                "_id": _id,
+                source_name: variant
             }
