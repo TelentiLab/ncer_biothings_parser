@@ -33,7 +33,7 @@ def load_data(data_folder: str):
         logger.info('start reading file: {}'.format(file_name))
         count = 0
         for line in file:
-            logger.info('reading line {} ({}%)'.format(count, format(count / FILE_LINES, '.2f')))
+            logger.info('reading line {} ({}%)'.format(count, format(count / FILE_LINES * 100, '.2f')))
             count += 1
             # read and parse each line into a dict
             chrom, start, end, percentile = line.strip().split(delimiter)
