@@ -3,12 +3,12 @@ import logging
 from biothings.utils.dataload import dict_sweep
 
 FILE_NOT_FOUND_ERROR = 'Cannot find input file: {}'   # error message constant
-FILE_LINES = 290366
-# FILE_LINES = 282932324
+# FILE_LINES = 290366
+FILE_LINES = 282932324
 
 # change following parameters accordingly
 source_name = 'ncer'   # source name that appears in the api response
-file_name = 'sample_data'   # name of the file to read
+file_name = 'sliding10bp_window10bp_ncER_OMNI.txt'   # name of the file to read
 delimiter = '\t'    # the delimiter that separates each field
 logging.basicConfig(format='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s', level=logging.INFO)
 logger = logging.getLogger('ncer_logger')
