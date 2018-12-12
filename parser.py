@@ -3,13 +3,16 @@ import logging
 from biothings.utils.dataload import dict_sweep
 
 FILE_NOT_FOUND_ERROR = 'Cannot find input file: {}'   # error message constant
-# FILE_LINES = 290366
-FILE_LINES = 282932324
+FILE_LINES = 290366 # sample file lines
+# FILE_LINES = 282932324
 
 # change following parameters accordingly
 source_name = 'ncer'   # source name that appears in the api response
-file_name = 'sliding10bp_window10bp_ncER_OMNI.txt'   # name of the file to read
+file_name = 'sample.txt'   # sample file
+# file_name = 'sliding10bp_window10bp_ncER_OMNI.txt'   # name of the file to read
 delimiter = '\t'    # the delimiter that separates each field
+
+# configure logger
 logging.basicConfig(format='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s', level=logging.INFO)
 logger = logging.getLogger('ncer_logger')
 
@@ -30,23 +33,26 @@ def load_data(data_folder: str):
         raise FileExistsError(FILE_NOT_FOUND_ERROR.format(input_file))
 
     with open(input_file, 'r') as file:
-        logger.info('start reading file: {}'.format(file_name))
+        logger.info(f'start reading file: {file_name}')
         count = 0
         for line in file:
-            logger.info('reading line {} ({}%)'.format(count, format(count / FILE_LINES * 100, '.2f')))
+            logger.info(f'reading line {count} ({(count / FILE_LINES * 100):.2f}%)')    # format to use 2 decimals
             count += 1
             # read and parse each line into a dict
             chrom, start, end, percentile = line.strip().split(delimiter)
-            _id = '{chrom}:g.{start}_{end}'.format(chrom=chrom, start=start, end=end)
+            _id = f'chr{chrom}:g.{start}_{end}'
+            # enforce data type
             variant = {
-                "chrom": chrom,
-                "start": start,
-                "end": end,
-                "percentile": percentile,
+                'chrom': chrom,
+                'start': int(start),
+                'end': int(end),
+                'percentile': float(percentile),
             }
+
             variant = dict_sweep(variant, vals=['', 'null', 'N/A', None, [], {}])
+            # commit an entry by yielding
             yield {
                 "_id": _id,
                 source_name: variant
             }
-        logger.info('complete, {} lines read'.format(count))
+        logger.info(f'parsing completed, {count} lines read')
