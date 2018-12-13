@@ -8,7 +8,7 @@ FILE_LINES = 290366 # sample file lines
 
 # change following parameters accordingly
 source_name = 'ncer'   # source name that appears in the api response
-file_name = 'sample.txt'   # sample file
+file_name = 'sample_data.txt'   # sample file
 # file_name = 'sliding10bp_window10bp_ncER_OMNI.txt'   # name of the file to read
 delimiter = '\t'    # the delimiter that separates each field
 
