@@ -1,15 +1,13 @@
 import os
 import logging
-from biothings.utils.dataload import dict_sweep
 
 FILE_NOT_FOUND_ERROR = 'Cannot find input file: {}'  # error message constant
-FILE_LINES = 290366  # sample file lines
-# FILE_LINES = 282932324
+# FILE_LINES = 290366  # sample file lines
+FILE_LINES = 282932324
 
-# change following parameters accordingly
 source_name = 'ncer'  # source name that appears in the api response
-file_name = 'sample_data.txt'  # sample file
-# file_name = 'sliding10bp_window10bp_ncER_OMNI.txt'   # name of the file to read
+# file_name = 'sample_data.txt'  # sample file
+file_name = 'sliding10bp_window10bp_ncER_OMNI.txt'   # name of the file to read
 delimiter = '\t'  # the delimiter that separates each field
 
 # configure logger
@@ -35,25 +33,38 @@ def load_data(data_folder: str):
     with open(input_file, 'r') as file:
         logger.info(f'start reading file: {file_name}')
         count = 0
+        skipped = []
         for line in file:
-            logger.info(f'reading line {count} ({(count / FILE_LINES * 100):.2f}%)')  # format to use 2 decimals
             count += 1
+            logger.info(f'reading line {count} ({(count / FILE_LINES * 100):.2f}%)')  # format to use 2 decimals
             # read and parse each line into a dict
-            chrom, start, end, percentile = line.strip().split(delimiter)
+            try:
+                chrom, start, end, percentile = line.strip().split(delimiter)
+            except ValueError:
+                logger.error(f'failed to unpack line {count}: {line}')
+                skipped.append(line)
+                continue  # skip error line
+
             chrom = chrom.replace('chr', '')
             _id = f'chr{chrom}:g.{start}_{end}'
-            # enforce data type
-            variant = {
-                'chrom': chrom,
-                'start': int(start),
-                'end': int(end),
-                'percentile': float(percentile),
-            }
+            try:
+                # enforce data type
+                variant = {
+                    'chrom': chrom,
+                    'start': int(start),
+                    'end': int(end),
+                    'percentile': float(percentile),
+                }
+            except ValueError as e:
+                logger.error(f'failed to cast type for line {count}: {e}')
+                skipped.append(line)
+                continue  # skip error line
 
-            variant = dict_sweep(variant, vals=['', 'null', 'N/A', None, [], {}])
             # commit an entry by yielding
             yield {
                 "_id": _id,
                 source_name: variant
             }
-        logger.info(f'parsing completed, {count} lines read')
+        logger.info(f'parse completed, {len(skipped)}/{count} lines skipped.')
+        for x in skipped:
+            logger.info(f'skipped line: {x}')
