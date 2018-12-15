@@ -1,11 +1,13 @@
 {
-    "version": "0.1",
+    "version": "0.2",
+    "__metadata__" : {
+        "url" : "https://ncer.telentilab.com"
+    },
     "dumper" : {
-        "data_url" : "http://localhost:8080/data/sample_data.txt.gz",
+        "data_url" : "http://localhost:8080/data/sliding10bp_window10bp_ncER_OMNI.txt.gz",
         "uncompress" : true
     },
     "uploader" : {
-        "parser" : "parser:load_data",
-        "ignore_duplicates" : false
+        "parser" : "parser:load_data"
     }
 }
