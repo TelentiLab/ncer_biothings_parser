@@ -2,17 +2,19 @@ import os
 import logging
 
 FILE_NOT_FOUND_ERROR = 'Cannot find input file: {}'  # error message constant
-# FILE_LINES = 290366  # sample file lines
 FILE_LINES = 282932324
 
 source_name = 'ncer'  # source name that appears in the api response
-# file_name = 'sample_data.txt'  # sample file
-file_name = 'sliding10bp_window10bp_ncER_OMNI.txt'   # name of the file to read
+file_name = 'ncER_10bpBins_percentile_version1.txt'   # name of the file to read
 delimiter = '\t'  # the delimiter that separates each field
 
 # configure logger
 logging.basicConfig(format='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s', level=logging.INFO)
 logger = logging.getLogger('ncer_logger')
+
+
+def version(self):
+    return 'v1'
 
 
 def load_data(data_folder: str):

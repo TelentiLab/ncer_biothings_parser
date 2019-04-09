@@ -4,10 +4,12 @@
         "url" : "https://ncer.telentilab.com"
     },
     "dumper" : {
-        "data_url" : "http://localhost:8080/data/sliding10bp_window10bp_ncER_OMNI.txt.gz",
-        "uncompress" : true
+        "data_url" : "http://localhost:8080/data/ncER_10bpBins_percentile_version1.txt.gz",
+        "uncompress" : true,
+        "release": "parser:version"
     },
     "uploader" : {
-        "parser" : "parser:load_data"
+        "parser" : "parser:load_data",
+        "on_duplicates": "error"
     }
 }
